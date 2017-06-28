@@ -1,0 +1,22 @@
+export project_root=${PWD}
+export app_root="$project_root/django_react_sample"
+alias src="source $project_root/.aliases"
+alias activate="source $project_root/_venv/bin/activate"
+
+alias manage="python $app_root/manage.py"
+alias mm="manage migrate"
+alias mmm="manage makemigrations"
+alias mr="manage runserver"
+alias startapp="manage startapp"
+alias superuser="manage createsuperuser"
+
+setup(){
+  cd $project_root
+  rm -rf _venv
+  virtualenv _venv
+  activate
+  pip install -r requirements.txt
+  django-admin startproject django_react_sample
+  cd django_react_sample
+  export app_root=${PWD}
+}

@@ -1,0 +1,78 @@
+{% load static argonauts %}
+<html>
+  <head>
+    <link rel="stylesheet" href="{% get_static_prefix %}css/pure.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% get_static_prefix %}css/app.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% get_static_prefix %}css/griddle.css" type="text/css" media="screen" />
+
+
+  </head>
+
+  <h1>Django-React integration</h1>
+
+  <h2>Hello world sample</h2>
+  <div id="react-container-hello-world">{{ rendered_hello_world }}</div>
+
+  <h2>Single comment sample</h2>
+  <div id="react-container-comment">{{ rendered_comment }}</div>
+
+  <h2>Multiple comments (fixed data) sample</h2>
+  <div id="react-container-comments-fixed">{{ rendered_comments_fixed }}</div>
+
+  <h2>Multiple comments (fixed data) sample with Griddle</h2>
+  <div id="react-container-comments-fixed-with-griddle">{{ rendered_comments_fixed_with_griddle }}</div>
+
+
+  <h2>Multiple comments (real data from db) sample</h2>
+  <div id="react-container-comments">{{ rendered_comments }}</div>
+
+  <h2>Comment box</h2>
+  <div id="react-container-comment-box"></div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.js"></script>
+￼
+  <script src="{% get_static_prefix %}build/app_webpack.js"></script>
+
+
+  <script>
+  var react_ctx_comment = {{ react_ctx_comment | json }}
+
+  // ReactDOM.render(React.createFactory(Comment)(react_ctx_comment), document.getElementById('react-container-comment'))
+  ReactDOM.render(React.createElement(Comment, {
+    id: react_ctx_comment.id,
+    name: react_ctx_comment.name,
+    text: react_ctx_comment.text,
+  }), document.getElementById('react-container-comment'))
+
+  var react_ctx_comments_fixed = {{ react_ctx_comments_fixed | json }};
+  
+  ReactDOM.render(React.createElement(Comments, {
+    comments: react_ctx_comments_fixed.comments,
+  }), document.getElementById('react-container-comments-fixed'))
+
+  // ReactDOM.render(React.createElement(Griddle, {
+  //   // true,
+  //   results: react_ctx_comments_fixed.comments,
+  // }), document.getElementById('react-container-comments-fixed-with-griddle'));
+
+
+  var react_ctx_comments = {{ react_ctx_comments | json }};
+  ReactDOM.render(React.createElement(Comments, {
+    comments: react_ctx_comments.comments,
+  }),  document.getElementById('react-container-comments'))
+
+  window.rerenderComments = function () {
+     ReactDOM.render(React.createElement(Comments, {
+       comments: react_ctx_comments.comments,
+     }),  document.getElementById('react-container-comments'))
+  }
+  ReactDOM.render(React.createElement(HelloWorld),  document.getElementById('react-container-hello-world'))
+
+  ReactDOM.render(React.createElement(CommentBox),  document.getElementById('react-container-comment-box'))
+
+  window.csrftoken = '{{ csrf_token }}'
+
+</script>
+</html>

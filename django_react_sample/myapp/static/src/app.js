@@ -1,0 +1,10 @@
+window.React = require('react')
+console.log('react', window.React)
+window._ = require('underscore')
+window.Griddle = require('griddle-react')
+
+window.HelloWorld = require('./hello_world')
+window.Comment = require('./comment')
+window.Comments = require('./comments')
+window.CommentBox = require('./comment_box')
+window.Store = require('./store')
